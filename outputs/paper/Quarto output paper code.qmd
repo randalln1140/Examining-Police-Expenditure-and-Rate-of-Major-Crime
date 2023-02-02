@@ -1,0 +1,66 @@
+---
+title: "Investigating Relationship Between Major Crime Rate and Police Expenditure"
+date: "1 Feburary 2022"
+author: "Randall Ni"
+abstract: "We consider data about Chili and find that he is, indeed, a good dog.(4 sentences for abstract is good enough)"
+format: pdf
+bibliography: references.bib
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+##Load Library
+library(opendatatoronto)
+library(tidyverse)
+library(janitor)
+```
+
+You can add options to executable code like this
+
+```{r}
+##Clean Data for Major Crimes Indicator
+##Clear Rows with Nas 
+reported_crimes_data <-
+  na.omit(reported_crimes_data)
+##Clean data, select what I wanted for graphing purposes
+reported_crimes_data <-
+  clean_names(reported_crimes_data)
+
+reported_crimes_data <-
+  reported_crimes_data |>
+  mutate(percentage_cleared = as.numeric(count_cleared) / as.numeric(count) *100)
+D11<-
+  reported_crimes_data |>
+  filter(geo_division == "D11")
+##testing graphs
+reported_crimes_data |>
+  filter()
+    ggplot(reported_crimes_data, aes(fill = geo_division, x = reported_year, y = percentage_cleared)) + geom_bar(stat = "identity")
+    ggplot(reported_crimes_data, aes(fill = category, x = reported_year, y = percentage_cleared)) + geom_bar(stat = "identity")
+    ggplot(reported_crimes_data, aes(fill = geo_division, x = reported_year)) +geom_bar()
+    ggplot(D11, aes(x = reported_year, y = percentage_cleared, col = category)) + geom_line() + geom_point()
+    
+    
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+##Clean Data for Police Expenditure data
+##Clean data, select what I wanted for graphing purposes
+police_expenditure_data <-
+  clean_names(police_expenditure_data)
+##Select needed columns
+  police_expenditure_data |>
+  select(year, division, gross_expenditure_final )
+
+##brief graph
+  ggplot(police_expenditure_data, aes(x = year, y = gross_expenditure_final, col = division)) + geom_line() + geom_point()
+```
+
