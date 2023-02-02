@@ -32,4 +32,10 @@ reported_crimes_data
 
 
 ##write code to save data as a csv file into inputs/data
+write.csv(reported_crimes_data, 
+          "inputs/data/reported_crimes_data.csv")
+
+write.csv(police_expenditure_data, 
+          "inputs/data/police_expenditure_data.csv")
+
 ##commit then push this to git
