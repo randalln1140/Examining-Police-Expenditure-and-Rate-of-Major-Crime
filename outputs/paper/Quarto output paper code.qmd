@@ -1,66 +1,19 @@
 ---
-title: "Investigating Relationship Between Major Crime Rate and Police Expenditure"
+title: "Investigating Relationship Between Police Expenditure and Reported Crime Rate"
 date: "1 Feburary 2022"
+date-format: long
 author: "Randall Ni"
-abstract: "We consider data about Chili and find that he is, indeed, a good dog.(4 sentences for abstract is good enough)"
+abstract: "The debate of wether or not to cut police funding has gone on for ages. the propagators feared police brutalities due to the constant news portrayal, while others have argued that police activity should be required to ensure people's safety. Recent news of violent crimes such as the stabbings in some of the TTC stations have highlighted the urgency of this issue; the topic of this debate is more relevant to us than we think. We can use data to settle this debate once in and for all, and they are critical for understanding the correlations between police expenditure and the number of solved reported crimes. (write smthing you found in graphs later)"
 format: pdf
 bibliography: references.bib
 ---
 
-## Quarto
+## 1. Introduction
+The Toronto police force ensures the safety of around 2965710 civilians daily, and their presence can deter some degrees of blatant criminal activities (Guz 2022). However, being civil servants, the Toronto police department requires funding to continue their daily operations. In 2022, the total police budget went up to approximately 1.1 billion dollars, which takes up around 7% of the entire city's operating cost (Jones 2022). This is not only in Toronto, major cities such as Montreal, Vancouver, and Calgary all have police expenses that take up a large portion of their city's budget. The question of whether we should give the police that much resources was always looming, and the death of George Flyod made this issue a hot topic. This event has also sparked the movement of "defunding the police". Although it began in the United States of America, it slowly migrated to Canadian cities as well. Critics have questioned the enormous amount of resources that the police force was using and argued that the resource (money) should be placed elsewhere such as community initiatives. One of the proponents mentioned that they "don't have a good sense of what the police do with the money we give them", and they questioned the efficiency of police work (Jones 2022). Although the debate surrounding this issue is heated, a lot of people are basing their opinions purely on what they saw in the news or on social media platforms. Therefore, it is imperative that we use data to support certain claims and prevent possible misleading information shown on our screens. 
+Data sets regarding police expenditure and reported crimes rate are extremely important in order to understand the potential correlations between the two elements. There are some very interesting factors that we can examine to determine if some of the issues raised in the "defund the police" movement are justified. Since reported crimes get documented regardless of the police solving them, we can easily get the percentage of solved crimes; the percentage indicates that the police force allocated enough expense and manpower and gave the victims a satisfying result. The analysis of these elements will surely settle or support some of the concerns raised by proponents of the "defund the police" movement.
+In this paper, I will try to analyse the connections between police expenditure and the percentage of crimes cleared based on different types of offense in order to answer the question of whether the police should get less funding or not. More specifically, I will first investigate the trend of police expenditure and how they fluctuate between 2014-2019. Next, I would take a look at overall reported crime within that time frame in order to determine if there are any outside influences. Lastly, I would compare the percentage and expenditure data separated by unique division numbers to address the efficiency questions of police stations. This analysis will be performed in R (R Core Team 2021), using the dplyr (Wickham et al. 2021), knitr (Xie 2021b), janitor (Firke 2021), and tidyverse (Wickham et al. 2019) packages. All figures in the report are generated using ggplot2 (Wickham 2016) and tables are created with kableExtra (Zhu 2021). 
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Data
 
-## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-##Load Library
-library(opendatatoronto)
-library(tidyverse)
-library(janitor)
-```
-
-You can add options to executable code like this
-
-```{r}
-##Clean Data for Major Crimes Indicator
-##Clear Rows with Nas 
-reported_crimes_data <-
-  na.omit(reported_crimes_data)
-##Clean data, select what I wanted for graphing purposes
-reported_crimes_data <-
-  clean_names(reported_crimes_data)
-
-reported_crimes_data <-
-  reported_crimes_data |>
-  mutate(percentage_cleared = as.numeric(count_cleared) / as.numeric(count) *100)
-D11<-
-  reported_crimes_data |>
-  filter(geo_division == "D11")
-##testing graphs
-reported_crimes_data |>
-  filter()
-    ggplot(reported_crimes_data, aes(fill = geo_division, x = reported_year, y = percentage_cleared)) + geom_bar(stat = "identity")
-    ggplot(reported_crimes_data, aes(fill = category, x = reported_year, y = percentage_cleared)) + geom_bar(stat = "identity")
-    ggplot(reported_crimes_data, aes(fill = geo_division, x = reported_year)) +geom_bar()
-    ggplot(D11, aes(x = reported_year, y = percentage_cleared, col = category)) + geom_line() + geom_point()
-    
-    
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
-```{r}
-##Clean Data for Police Expenditure data
-##Clean data, select what I wanted for graphing purposes
-police_expenditure_data <-
-  clean_names(police_expenditure_data)
-##Select needed columns
-  police_expenditure_data |>
-  select(year, division, gross_expenditure_final )
-
-##brief graph
-  ggplot(police_expenditure_data, aes(x = year, y = gross_expenditure_final, col = division)) + geom_line() + geom_point()
-```
-
+## Reference List
