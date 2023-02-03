@@ -15,10 +15,47 @@ In this paper, I will try to analyse the connections between police expenditure 
 
 ## 2. Data
 ### 2.1 Data Collection Method and Possible Bias/ Flaws
-This analysis report will be using two datasets: "police annual statistical report reported crimes" and "police annual statistical report gross expenditures by division", and they were all obtained from opendatatoronto's open data portal. I accessed the raw datasets using the opendatatoronto package (Gelfand 2020) and saved them in the input/data file. Both datasets are a part of the police annual statistcal (provided by the Toronto Police Department) report from 2014 to 2019, and they were last refreshed on November 18th, 2022.
-There are some factors that those two datasets cannot address. For example, due to the Municipal Freedom of Information and Protection of Privacy Act, the police cannot disclose locations of the crime and personal information about the crime. Therefore, using the reported crimes data won't answer questions surrounding police brutality on minorities. Furthermore, police expenditure dataset also suffers from a lack of information. We can only obtain the overall expenditure of divisions seperated by year; however, that does not tell us how much percentage of the expenditure actually went into crime solving. Although the above evidence mean that the attributes given does not translate into a clear answer that solve the argument completely, the remaining data on those two data sets could still produce a relatively sufficient graph and gain us more insight for our proposed correlation.
+This analysis report will be using two data sets: "police annual statistical report reported crimes" and "police annual statistical report gross expenditures by division", and they were all obtained from opendatatoronto's open data portal. I accessed the raw data sets using the opendatatoronto package (Gelfand 2020) and saved them in the input/data file. Both data sets are a part of the police annual statistical (provided by the Toronto Police Department) report from 2014 to 2019, and they were last refreshed on November 18th, 2022.
+There are some factors that those two data sets cannot address. For example, due to the Municipal Freedom of Information and Protection of Privacy Act, the police cannot disclose locations of the crime and personal information about the crime. Therefore, using the reported crimes data won't answer questions surrounding police brutality on minorities. Furthermore, the police expenditure data set also suffers from a lack of information. We can only obtain the overall expenditure of divisions separated by year; however, that does not tell us how much percentage of the expenditure actually went into crime solving. Although the above evidences mean that the attributes given does not translate into a clear answer that solves the argument completely, the remaining data on those two data sets could still produce a relatively sufficient graph and gain us more insight for our proposed correlation.
 
 ### 2.2 Police Expenditure Data
+To begin with, I will first take a look at the police expenditure data. This raw data set contains 128 observations and seven variables. Due to the ease of analysis, I have also used the mutate function in the dplyr package (Wickham et al. 2021) to create a new column for the variable "gross_expenditure_final" called "expense_amount". I got rid of the dollar sign and commas present in the previous column for ease of graphing and made the values in the column switch from "character" to "numeric". Extract of the cleaned data set is shown below (Table 1). 
+```{r}
+##Load Library
+library(opendatatoronto)
+library(tidyverse)
+library(janitor)
+library(knitr)
+
+##Read Data Sets
+reported_crimes_data <-
+  read_csv(here::here("inputs/data/reported_crimes_data.csv"))
+police_expenditure_data <-
+  read_csv(here::here("inputs/data/police_expenditure_data.csv"))
+
+##Clean Police Expenditure Data
+police_expenditure_data <-
+  clean_names(police_expenditure_data)
+
+##Need to create new column since old one isn't numeric
+police_expenditure_data <-
+  police_expenditure_data |>
+  mutate(expense_amount = gsub("\\$","", police_expenditure_data$gross_expenditure_final))
+
+police_expenditure_data$expense_amount <- as.numeric(gsub(",","",police_expenditure_data$expense_amount)) |> as.numeric()
+
+##Create a table 
+knitr::kable(head(police_expenditure_data), "pipe", align = "lcclllcr", caption = "Extracting First Six Rows form the Edited Version of Police Expenditure Data")
+```
+
+The three most valuable variables shown with the above table are year, division (where the police station was stationed), and expense amount. These variable will yield interesting insight regarding this debate, since we can see the total amount of each division's expenses and the fluctuation of them from 2014 to 2019. I am interested to see the general trend of police expenses throughout the years, and we can examine specific divisions' efficiency using this data.
+
+
+
+
+
+
+
 
 
 ## Reference List
