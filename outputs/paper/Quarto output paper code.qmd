@@ -46,7 +46,7 @@ police_expenditure_data <-
 police_expenditure_data$expense_amount <- as.numeric(gsub(",","",police_expenditure_data$expense_amount)) |> as.numeric()
 
 ##Create a table 
-knitr::kable(head(police_expenditure_data), "pipe", align = "lcclllcr", caption = "Extracting First Six Rows form the Edited Version of Police Expenditure Data")
+knitr::kable(head(police_expenditure_data), "pipe", align = "lcclllcr", caption = "Table 1: Extracting First Six Rows form the Edited Version of Police Expenditure Data")
 ```
 
 The three most valuable variables shown with the above table are year, division (where the police station was stationed), and expense amount. These variable will yield interesting insight regarding this debate, since we can see the total amount of each division's expenses and the fluctuation of them from 2014 to 2019. I am interested to see the general trend of police expenses throughout the years, and we can examine specific divisions' efficiency using this data.
@@ -60,6 +60,39 @@ The three most valuable variables shown with the above table are year, division 
 ```
 
 I have used the scale package [@scale] to clean up my y-axis, so it shows numbers instead of staying in a log format; this allows us to more easily identify trends and learn how much actual money police stations are spending. In figure 1 above, we can easily see that police divisions' annual expenses are astronomical from the year of 2014 to 2021. However, there is no uniformed trend amongst those divisions; around half (8) of the divisions experienced an expense increase, while the rest either have no significant expense changes or have decreased their spendings. Division 54 & 55 is an outlier in this case, since the data set originally combined their expenses; after division 54 joined 55, the spending has reduced dramatically. For the convenience of the analysis, I will be examining the police divisions that have increased their spending in order to see whether more spending equates to a more efficient rate of solving crimes. In this case, division 14, 51, 52, and 43 all showed a steady increase in their expenses between 2014 to 2021; I will filter their data out in the next section for more specific analysis.
+
+### 2.3 Reported Crimes Data
+In order to make the observations above into analysis, we must also take into the account of the efficiency of the police. While a lot of data sets can show the number of incidents occurred during specific years, the data set I will be using shows the number of cases cleared (solved) as well. This allows us to gain more insight in the overall ability of the police. It is reasonable to argue that having only the amount of cases reported or having the amount of cases cleared is useless, since we cannot determine how well the police do their job and protect their people from malicious acts. Examining the total amount of reported crimes can especially be misleading. Police force is not God, therefore they cannot totally prevent the crimes from happening. The best thing they can do is to bring the perpetrator down with the force of law after crimes have been committed. Furthermore, by only examining the total number of cases, they can be easily influenced by outside forces that are unpredictable such as Covid-19 pandemic. Extract of the cleaned original reported crimes data set is shown below (Table 2).
+
+```{r}
+##Clean Data for Reported Crimes Data
+reported_crimes_data <-
+  clean_names(reported_crimes_data)
+##Clear Rows with Nas 
+reported_crimes_data <-
+  na.omit(reported_crimes_data)
+
+##Create a table 
+knitr::kable(head(reported_crimes_data), "pipe", align = "lcccllcr", caption = "Table 2: Extracting First Six Rows form the Original Version of Reported Crimes Data", col.names = c("ID","Object ID", "Reported Year", "Division Responsible", "Category", "Subtype", "Cases Count", "Solved Cases"))
+
+```
+Table 2's data is very descriptive; however, we won't be needing the specific subtypes of crime categories and they are out of scope. Therefore, I created a new table that adds up each individual subtype within their main category. Furthermore, I also calculated the percentage of each division's success rate in solving crimes in each category. Extract of the cleaned, edited version of the reported crimes data set is shown below (Table 3).
+
+```{r}
+## Edited Version of Reported Crime Data (collapsed subtypes and added percentage cleared)
+options(dplyr.summarise.inform = FALSE)
+edited_reported_crimes_data <-
+reported_crimes_data |>
+  group_by(category, reported_year, geo_division) |>
+  summarise(num_category = sum(as.numeric(count)), 
+            num_category_cleared = sum(as.numeric(count_cleared)))|>
+  mutate(percentage = num_category_cleared/ num_category *100)
+
+##Create a table 
+knitr::kable(head(edited_reported_crimes_data), "pipe", align = "lccccr", caption = "Table 3: Extracting First Six Rows form the Edited Version of Reported Crimes Data", col.names = c("Category of Crime","Reported Year", "Division Responsible", "Cases Count", "Solved Cases", "Solved Percentage"))
+```
+Table 3 above gives us a clearer idea of the data set and weeded out unnecessary variables such as "Object ID" and "Subtype". The four specific variables that I wanted are "Category of Crime", "Reported Year", "Division Responsible", and "Solved Percentage". Before we dive into the specific division's efficiency by comparing their expenses and "Solved Percentage", we must first take a look at the overall amount of crime reported and see if there are any anomalies or outliers. 
+
 
 
 
