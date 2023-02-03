@@ -11,7 +11,7 @@ bibliography: references.bib
 ## 1. Introduction
 The Toronto police force ensures the safety of around 2965710 civilians daily, and their presence can deter some degrees of blatant criminal activities (Guz 2022). However, being civil servants, the Toronto police department requires funding to continue their daily operations. In 2022, the total police budget went up to approximately 1.1 billion dollars, which takes up around 7% of the entire city's operating cost (Jones 2022). This is not only in Toronto, major cities such as Montreal, Vancouver, and Calgary all have police expenses that take up a large portion of their city's budget. The question of whether we should give the police that much resources was always looming, and the death of George Flyod made this issue a hot topic. This event has also sparked the movement of "defunding the police". Although it began in the United States of America, it slowly migrated to Canadian cities as well. Critics have questioned the enormous amount of resources that the police force was using and argued that the resource (money) should be placed elsewhere such as community initiatives. One of the proponents mentioned that they "don't have a good sense of what the police do with the money we give them", and they questioned the efficiency of police work (Jones 2022). Although the debate surrounding this issue is heated, a lot of people are basing their opinions purely on what they saw in the news or on social media platforms. Therefore, it is imperative that we use data to support certain claims and prevent possible misleading information shown on our screens. 
 Data sets regarding police expenditure and reported crimes rate are extremely important in order to understand the potential correlations between the two elements. There are some very interesting factors that we can examine to determine if some of the issues raised in the "defund the police" movement are justified. Since reported crimes get documented regardless of the police solving them, we can easily get the percentage of solved crimes; the percentage indicates that the police force allocated enough expense and manpower and gave the victims a satisfying result. The analysis of these elements will surely settle or support some of the concerns raised by proponents of the "defund the police" movement.
-In this paper, I will try to analyse the connections between police expenditure and the percentage of crimes cleared based on different types of offense in order to answer the question of whether the police should get less funding or not. More specifically, I will first investigate the trend of police expenditure and how they fluctuate between 2014-2019. Next, I would take a look at overall reported crime within that time frame in order to determine if there are any outside influences. Lastly, I would compare the percentage and expenditure data separated by unique division numbers to address the efficiency questions of police stations. This analysis will be performed in R (R Core Team 2021), using the dplyr (Wickham et al. 2021), knitr (Xie 2021b), janitor (Firke 2021), and tidyverse (Wickham et al. 2019) packages. All figures in the report are generated using ggplot2 (Wickham 2016) and tables are created with kableExtra (Zhu 2021). 
+In this paper, I will try to analyse the connections between police expenditure and the percentage of crimes cleared based on different types of offense in order to answer the question of whether the police should get less funding or not. More specifically, I will first investigate the trend of police expenditure and how they fluctuate between 2014-2019. Next, I would take a look at overall reported crime within that time frame in order to determine if there are any outside influences. Lastly, I would compare the percentage and expenditure data separated by unique division numbers to address the efficiency questions of police stations. This analysis will be performed in R (R Core Team 2021), using the dplyr (Wickham et al. 2021), knitr (Xie 2021b), janitor (Firke 2021), scales [@scale] and tidyverse (Wickham et al. 2019) packages. All figures in the report are generated using ggplot2 (Wickham 2016) and tables are created with kableExtra (Zhu 2021). 
 
 ## 2. Data
 ### 2.1 Data Collection Method and Possible Bias/ Flaws
@@ -26,6 +26,7 @@ library(opendatatoronto)
 library(tidyverse)
 library(janitor)
 library(knitr)
+library(scales)
 
 ##Read Data Sets
 reported_crimes_data <-
@@ -49,6 +50,14 @@ knitr::kable(head(police_expenditure_data), "pipe", align = "lcclllcr", caption 
 ```
 
 The three most valuable variables shown with the above table are year, division (where the police station was stationed), and expense amount. These variable will yield interesting insight regarding this debate, since we can see the total amount of each division's expenses and the fluctuation of them from 2014 to 2019. I am interested to see the general trend of police expenses throughout the years, and we can examine specific divisions' efficiency using this data.
+```{r}
+##brief graph
+  ggplot(police_expenditure_data, 
+         aes(x = year,
+             y = expense_amount,
+             col = division)) + 
+    geom_point() + geom_line() + labs(x = "Year", y = "Expense Amount ($)", title = "Total Annual Expense for Each Police Division", col = "Divisions") + theme_minimal() + theme(plot.title = element_text(face="bold")) + scale_y_continuous(labels = comma) + labs(caption="Figure 1: Expenses for Each Division Seperated by Year")
+```
 
 
 
