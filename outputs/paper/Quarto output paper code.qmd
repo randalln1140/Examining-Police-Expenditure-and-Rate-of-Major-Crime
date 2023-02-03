@@ -119,6 +119,11 @@ edited_reported_crimes_data |>
   filter(geo_division == "D43") |>
   ggplot(aes(fill = category, x = reported_year, y = percentage)) + geom_bar(stat = "identity") + labs(caption="Figure 6: Division 43's total percentage of solved crime cases from 2014 to 2021 ") + labs(x = "Year", y = "Combined Percentage of Solved Cases", title = "Combined Percentage of Solved Cases Each Year for Division 43", fill = "Category of Crime") + theme_minimal() + theme(plot.title = element_text(face="bold"))
 ```
+Figure 3 to Figure 6 above showcase the four divisions that I mentioned at the ending part of section 2.2. They all have increased their expenditure in recent years compared to 2014, and there is a general trend of steady increase in expenses. Unfortunately, the figures above underscore a general trend of decline in the percentage of solved crime. Those four police division samples are particularly inept at solving property related crimes, while those crimes are most prevalent in the total number of reported crimes. Furthermore, those four divisions all had an average of roughly 83% of solving all types of crimes in 2014, but that percentage has dropped significantly in 2021 to around 64%; that is a barely passing grade for the police divisions that continue to increase their expenses. This trend is particularly noticeable in Figure 5 above, which represents Division 52; it had an approximately 58% case solving rate across all categories in 2021, and it saw a staggering 25% decrease in its efficiency since 2014. Some of the figures above show a slight bump in percentage of solved crimes in 2019, but that can be negligible since the general trend is that the efficiency is decreasing. 
+
+## 3. Discussion
+
+
 
 
 
